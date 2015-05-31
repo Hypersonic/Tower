@@ -2,7 +2,7 @@ class TowerFun(object):
     def __init__(self, opcodes=[0x0]):
         self.opcodes = opcodes
     
-    def run(self, stack):
+    def run(self, stack, inst_it):
         for opcode in self.opcodes:
             if opcode == 0x0: #noop
                 pass
@@ -46,11 +46,12 @@ def parse(tokens):
 
 def run(ops):
     stack = []
-    for op in ops:
+    it = iter(ops)
+    for op in it:
         if type(op) == int:
             stack.append(op)
         else:
-            op.run(stack)
+            op.run(stack, it)
     return stack
 
 if __name__ == '__main__':
