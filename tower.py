@@ -32,6 +32,9 @@ def run(tokens, stack, funcs):
             val = stack.pop()
             stack.append(val)
             stack.append(val)
+        elif token in ['call', '$']:
+            func_name = stack.pop()
+            run(funcs[func_name], stack, funcs)
         elif token == 'if':
             cond = stack.pop()
             true_func = stack.pop()
@@ -45,14 +48,14 @@ def run(tokens, stack, funcs):
         elif len(token) > 0 and token[0] == '"' and token[-1] == '"':
             stack.append(token[1:-1])
         elif token in funcs:
-            run(funcs[token], stack, funcs)
+            stack.append(token)
 
     return stack
         
 if __name__ == '__main__':
     program = """
     := f 1 1 + 1 - end
-    f
+    f call
     """
     print "PROGRAM:",program
     tokens = tokenize(program)
