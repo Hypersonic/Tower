@@ -1,67 +1,60 @@
-class TowerFun(object):
-    def __init__(self, opcodes=[0x0]):
-        self.opcodes = opcodes
-    
-    def run(self, stack, inst_it):
-        for opcode in self.opcodes:
-            if opcode == 0x0: #noop
-                pass
-            elif opcode == 0x1: #add
-                first = stack.pop()
-                second = stack.pop()
-                stack.append(first + second)
-            elif opcode == 0x2: #sub
-                first = stack.pop()
-                second = stack.pop()
-                stack.append(second - first)
-            elif opcode == 0x3: #mul
-                first = stack.pop()
-                second = stack.pop()
-                stack.append(first * second)
-            elif opcode == 0x4: #div
-                first = stack.pop()
-                second = stack.pop()
-                stack.append(second / first)
+def tokenize(program):
+    return program.split()
 
-tower_opcodes = {
-        'noop': 0x0,
-        '+'   : 0x1,
-        '-'   : 0x2,
-        '*'   : 0x3,
-        '/'   : 0x4
-        }
+def run(tokens, stack, funcs):
+    while tokens:
+        token = tokens.pop(0)
+        if token == ':=': # the "define" token
+            func_name = tokens.pop(0)
+            func_code = []
+            while tokens[0] != 'end':
+                func_code.append(tokens.pop(0))
+            funcs[func_name] = func_code
+        elif token == '+': # add
+            first = stack.pop()
+            second = stack.pop()
+            stack.append(first + second)
+        elif token == '-': # sub
+            first = stack.pop()
+            second = stack.pop()
+            stack.append(second - first)
+        elif token == '*': # mul
+            first = stack.pop()
+            second = stack.pop()
+            stack.append(first * second)
+        elif token == '/': # div
+            first = stack.pop()
+            second = stack.pop()
+            stack.append(second / first)
+        elif token == 'noop':
+            pass
+        elif token == 'dup':
+            val = stack.pop()
+            stack.append(val)
+            stack.append(val)
+        elif token == 'if':
+            cond = stack.pop()
+            true_func = stack.pop()
+            false_func = stack.pop()
+            if cond:
+                run(funcs[true_func], stack, funcs)
+            else:
+                run(funcs[false_func], stack, funcs)
+        elif token.isdigit():
+            stack.append(int(token))
+        elif len(token) > 0 and token[0] == '"' and token[-1] == '"':
+            stack.append(token[1:-1])
+        elif token in funcs:
+            run(funcs[token], stack, funcs)
 
-def tokenize(pgm):
-    return pgm.split()
-
-def parse(tokens):
-    out = []
-    for token in tokens:
-        if token.isdigit():
-            out.append(int(token))
-            continue
-        elif token in tower_opcodes:
-            out.append(TowerFun(opcodes=[tower_opcodes[token]]))
-    return out
-
-def run(ops):
-    stack = []
-    it = iter(ops)
-    for op in it:
-        if type(op) == int:
-            stack.append(op)
-        else:
-            op.run(stack, it)
     return stack
-
+        
 if __name__ == '__main__':
     program = """
-    1 1 + 1 -
+    := f 1 1 + 1 - end
+    f
     """
     print "PROGRAM:",program
     tokens = tokenize(program)
-    print "TOKENS:",tokens
-    parsed = parse(tokens)
-    print "PARSED:",parsed
-    result = run(parsed)
+    result = run(tokens, [], {})
     print "RESULT:",result
