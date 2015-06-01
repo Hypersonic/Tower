@@ -45,7 +45,7 @@ def run(tokens, stack, funcs):
                 run(funcs[false_func], stack, funcs)
         elif token.isdigit():
             stack.append(int(token))
-        elif len(token) > 0 and token[0] == '"' and token[-1] == '"':
+        elif len(token) >= 2 and token[0] == '"' and token[-1] == '"':
             stack.append(token[1:-1])
         elif token in funcs:
             stack.append(token)
