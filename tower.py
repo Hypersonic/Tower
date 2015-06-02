@@ -88,7 +88,7 @@ def run(tokens, stack, funcs):
             print str(val)
         elif token == '.s':
             print str(stack)
-        elif token.isdigit():
+        elif token.isdigit() or (token[1:].isdigit and token[0] == '-'):
             stack.append(int(token))
         elif all(c.isdigit() for c in token if c != '.'):
             stack.append(float(token))
