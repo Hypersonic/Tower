@@ -1,5 +1,29 @@
 def tokenize(program):
-    return program.split()
+    tokens = []
+    curr_token = ""
+    it = iter(program)
+    for c in it:
+        if c == '"': # strings are a single token
+            curr_token += '"'
+            curr = ''
+            while curr != '"':
+                curr = it.next()
+                if curr == '\\':
+                    curr_token += it.next()
+                else:
+                    curr_token += curr
+            curr_token += '"'
+        elif c == '(': # remove comments
+            curr = ''
+            while curr != ')':
+                curr = it.next()
+        elif c in [' ', '\n']: # whitespace terminates a token
+            if curr_token:
+                tokens.append(curr_token)
+                curr_token = ''
+        else:
+            curr_token += c
+    return tokens
 
 def run(tokens, stack, funcs):
     while tokens:
@@ -35,7 +59,7 @@ def run(tokens, stack, funcs):
             val = stack.pop()
             stack.append(val)
             stack.append(val)
-        elif token == 'drop':
+        elif token == 'pop':
             stack.pop()
         elif token in ['call', '$']:
             func_name = stack.pop()
@@ -76,12 +100,10 @@ if __name__ == '__main__':
     ( a comment )
     ' f call . 
     1 2 add .
-    drop
     1 2 3 4 5
-    .s
-    [
-    .s
+    .s [ .s pop .s ] .s
     """
     print "PROGRAM:",program
     tokens = tokenize(program)
+    print "TOKENS:",tokens
     result = run(tokens, [], {})
