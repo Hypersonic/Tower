@@ -37,6 +37,7 @@ def run(tokens, stack, funcs):
             func_code = []
             while tokens[0] != 'end':
                 func_code.append(tokens.pop(0))
+            tokens.pop(0) # remove end token
             funcs[func_name] = func_code
         elif token == '+': # add
             first = stack.pop()
@@ -67,7 +68,10 @@ def run(tokens, stack, funcs):
             stack.pop()
         elif token in ['call', '$']:
             func_name = stack.pop()
-            run(funcs[func_name], stack, funcs)
+            if func_name in funcs: # non-builtin func
+                run(funcs[func_name], stack, funcs)
+            else: # builtin func (or undefined, in which case it'll get caught later)
+                run([func_name], stack, funcs)
         elif token == 'if':
             cond = stack.pop()
             true_func = stack.pop()
@@ -91,6 +95,8 @@ def run(tokens, stack, funcs):
             stack.append(token[1:-2])
         elif token in funcs:
             run(funcs[token], stack, funcs)
+        else:
+            raise SyntaxError("No such function: " + token)
 
     return stack
         
@@ -104,6 +110,7 @@ if __name__ == '__main__':
     1 2 3 4 5
     "hello, world" .
     .s [ .s pop .s ] .s
+    asdf
     """
     print "PROGRAM:",program
     tokens = tokenize(program)
