@@ -38,6 +38,7 @@ def run(tokens, stack, funcs):
             while tokens[0] != 'end':
                 func_code.append(tokens.pop(0))
             tokens.pop(0) # remove end token
+# TODO: function optimization?
             funcs[func_name] = func_code
         elif token == '+': # add
             first = stack.pop()
@@ -58,8 +59,6 @@ def run(tokens, stack, funcs):
         elif token == "'": # "quote" operator, pushes the next function to the stack
             func_name = tokens.pop(0)
             stack.append(func_name)
-        elif token == 'noop':
-            pass
         elif token == 'dup':
             val = stack.pop()
             stack.append(val)
@@ -101,6 +100,10 @@ def run(tokens, stack, funcs):
             raise SyntaxError("No such function: " + token)
 
     return stack
+
+builtin_functions = {
+        'noop': []
+        }
         
 if __name__ == '__main__':
     program = """
@@ -117,4 +120,6 @@ if __name__ == '__main__':
     print "PROGRAM:",program
     tokens = tokenize(program)
     print "TOKENS:",tokens
-    result = run(tokens, [], {})
+    from copy import copy
+    result = run(tokens, [], copy(builtin_functions))
+    print builtin_functions
