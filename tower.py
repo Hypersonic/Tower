@@ -87,7 +87,7 @@ def run(tokens, stack, funcs):
         elif token.isdigit():
             stack.append(int(token))
         elif len(token) >= 2 and token[0] == '"' and token[-1] == '"':
-            stack.append(token[1:-1])
+            stack.append(token[1:-2])
         elif token in funcs:
             run(funcs[token], stack, funcs)
 
@@ -101,6 +101,7 @@ if __name__ == '__main__':
     ' f call . 
     1 2 add .
     1 2 3 4 5
+    "hello, world" .
     .s [ .s pop .s ] .s
     """
     print "PROGRAM:",program
