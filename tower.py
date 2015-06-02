@@ -110,7 +110,6 @@ if __name__ == '__main__':
     1 2 3 4 5
     "hello, world" .
     .s [ .s pop .s ] .s
-    asdf
     """
     print "PROGRAM:",program
     tokens = tokenize(program)
