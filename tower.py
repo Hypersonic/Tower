@@ -64,7 +64,7 @@ def run(tokens, stack, funcs):
 if __name__ == '__main__':
     program = """
     := f 1 1 + 1 - end
-    := add + end
+    := ( a b -> a+b ) add + end
     ( a comment )
     ' f call . 
     1 2 add .
