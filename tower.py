@@ -91,6 +91,8 @@ def run(tokens, stack, funcs):
             print str(stack)
         elif token.isdigit():
             stack.append(int(token))
+        elif all(c.isdigit() for c in token if c != '.'):
+            stack.append(float(token))
         elif len(token) >= 2 and token[0] == '"' and token[-1] == '"':
             stack.append(token[1:-2])
         elif token in funcs:
@@ -110,6 +112,7 @@ if __name__ == '__main__':
     1 2 3 4 5
     "hello, world" .
     .s [ .s pop .s ] .s
+    1.1 1 + .
     """
     print "PROGRAM:",program
     tokens = tokenize(program)
