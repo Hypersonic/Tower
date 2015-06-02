@@ -13,9 +13,13 @@ def tokenize(program):
                 else:
                     curr_token += curr
             curr_token += '"'
-        elif c == '(': # remove comments
+        elif c == '(': # remove inline comments
             curr = ''
             while curr != ')':
+                curr = it.next()
+        elif c == '#': # remove until-EOL comments
+            curr = ''
+            while curr != '\n':
                 curr = it.next()
         elif c in [' ', '\n']: # whitespace terminates a token
             if curr_token:
@@ -96,8 +100,8 @@ def run(tokens, stack, funcs):
 if __name__ == '__main__':
     program = """
     := f 1 1 + 1 - end
-    := ( a b -> a+b ) add + end
-    ( a comment )
+    := ( a b -> a+b ) add + end # this is a comment
+    ( an inline comment )
     ' f call . 
     1 2 add .
     1 2 3 4 5
