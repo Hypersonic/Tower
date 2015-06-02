@@ -85,9 +85,6 @@ def run(tokens, stack, funcs):
             print str(val)
         elif token == '.s':
             print str(stack)
-        elif token == '(':
-            while not ')' in tokens.pop(0):
-                pass
         elif token.isdigit():
             stack.append(int(token))
         elif len(token) >= 2 and token[0] == '"' and token[-1] == '"':
