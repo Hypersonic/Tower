@@ -109,6 +109,8 @@ if __name__ == '__main__':
     program = """
     := f 1 1 + 1 - end
     := ( a b -> a+b ) add + end # this is a comment
+    := tf + end
+    := ff - end
     ( an inline comment )
     ' f call . 
     1 2 add .
@@ -116,10 +118,10 @@ if __name__ == '__main__':
     "hello, world" .
     .s [ .s pop .s ] .s
     1.1 1 + .
+    1 1 ' ff ' tf 1 if .
     """
     print "PROGRAM:",program
     tokens = tokenize(program)
     print "TOKENS:",tokens
     from copy import copy
     result = run(tokens, [], copy(builtin_functions))
-    print builtin_functions
