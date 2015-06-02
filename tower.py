@@ -26,6 +26,9 @@ def run(tokens, stack, funcs):
             first = stack.pop()
             second = stack.pop()
             stack.append(second / first)
+        elif token == "'": # "quote" operator, pushes the next function to the stack
+            func_name = tokens.pop(0)
+            stack.append(func_name)
         elif token == 'noop':
             pass
         elif token == 'dup':
@@ -43,21 +46,29 @@ def run(tokens, stack, funcs):
                 run(funcs[true_func], stack, funcs)
             else:
                 run(funcs[false_func], stack, funcs)
+        elif token == '.':
+            val = stack.pop()
+            print str(val)
+        elif token == '(':
+            while not ')' in tokens.pop(0):
+                pass
         elif token.isdigit():
             stack.append(int(token))
         elif len(token) >= 2 and token[0] == '"' and token[-1] == '"':
             stack.append(token[1:-1])
         elif token in funcs:
-            stack.append(token)
+            run(funcs[token], stack, funcs)
 
     return stack
         
 if __name__ == '__main__':
     program = """
     := f 1 1 + 1 - end
-    f call
+    := add + end
+    ( a comment )
+    ' f call . 
+    1 2 add .
     """
     print "PROGRAM:",program
     tokens = tokenize(program)
     result = run(tokens, [], {})
-    print "RESULT:",result
