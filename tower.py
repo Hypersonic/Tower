@@ -35,6 +35,8 @@ def run(tokens, stack, funcs):
             val = stack.pop()
             stack.append(val)
             stack.append(val)
+        elif token == 'drop':
+            stack.pop()
         elif token in ['call', '$']:
             func_name = stack.pop()
             run(funcs[func_name], stack, funcs)
@@ -46,9 +48,15 @@ def run(tokens, stack, funcs):
                 run(funcs[true_func], stack, funcs)
             else:
                 run(funcs[false_func], stack, funcs)
+        elif token == '[': # rotate left
+            stack.append(stack.pop(0))
+        elif token == ']': # rotate right
+            stack.insert(0, stack.pop())
         elif token == '.':
             val = stack.pop()
             print str(val)
+        elif token == '.s':
+            print str(stack)
         elif token == '(':
             while not ')' in tokens.pop(0):
                 pass
@@ -68,6 +76,11 @@ if __name__ == '__main__':
     ( a comment )
     ' f call . 
     1 2 add .
+    drop
+    1 2 3 4 5
+    .s
+    [
+    .s
     """
     print "PROGRAM:",program
     tokens = tokenize(program)
