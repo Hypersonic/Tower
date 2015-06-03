@@ -1,3 +1,5 @@
+from copy import copy
+
 def tokenize(program):
     tokens = []
     curr_token = ""
@@ -68,7 +70,7 @@ def run(tokens, stack, funcs):
         elif token in ['call', '$']:
             func_name = stack.pop()
             if func_name in funcs: # non-builtin func
-                run(funcs[func_name], stack, funcs)
+                run(copy(funcs[func_name]), stack, funcs)
             else: # builtin func (or undefined, in which case it'll get caught later)
                 run([func_name], stack, funcs)
         elif token == 'if':
@@ -76,9 +78,9 @@ def run(tokens, stack, funcs):
             true_func = stack.pop()
             false_func = stack.pop()
             if cond:
-                run(funcs[true_func], stack, funcs)
+                run(copy(funcs[true_func]), stack, funcs)
             else:
-                run(funcs[false_func], stack, funcs)
+                run(copy(funcs[false_func]), stack, funcs)
         elif token == '[': # rotate left
             stack.append(stack.pop(0))
         elif token == ']': # rotate right
@@ -95,8 +97,7 @@ def run(tokens, stack, funcs):
         elif len(token) >= 2 and token[0] == '"' and token[-1] == '"':
             stack.append(token[1:-2])
         elif token in funcs:
-            from copy import copy
-            run(copy(funcs[token]), stack, copy(funcs))
+            run(copy(funcs[token]), stack, funcs)
         else:
             raise SyntaxError("No such function: " + token)
 
