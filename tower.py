@@ -95,7 +95,8 @@ def run(tokens, stack, funcs):
         elif len(token) >= 2 and token[0] == '"' and token[-1] == '"':
             stack.append(token[1:-2])
         elif token in funcs:
-            run(funcs[token], stack, funcs)
+            from copy import copy
+            run(copy(funcs[token]), stack, copy(funcs))
         else:
             raise SyntaxError("No such function: " + token)
 
