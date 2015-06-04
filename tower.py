@@ -67,7 +67,7 @@ def run(tokens, stack, funcs):
             stack.append(val)
         elif token == 'pop':
             stack.pop()
-        elif token in ['call', '$']:
+        elif token =='call':
             func_name = stack.pop()
             if func_name in funcs: # non-builtin func
                 run(copy(funcs[func_name]), stack, funcs)
@@ -104,7 +104,8 @@ def run(tokens, stack, funcs):
     return stack
 
 builtin_functions = {
-        'noop': []
+        'noop': [],
+        '$': ['call']
         }
         
 if __name__ == '__main__':
