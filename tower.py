@@ -90,10 +90,13 @@ def run(tokens, stack, funcs):
             print str(val)
         elif token == '.s':
             print str(stack)
-        elif token.isdigit() or (token[1:].isdigit and token[0] == '-'):
+        elif token.isdigit() or (token[1:].isdigit() and token[0] == '-'):
             stack.append(int(token))
-        elif all(c.isdigit() for c in token if c != '.'):
-            stack.append(float(token))
+        elif all(c.isdigit() for c in token if c != '.' and c != '-'):
+            if (token.count('-') == 1 and token[0] == '-') or token.count('-') == 0:
+                stack.append(float(token))
+            else:
+                raise SyntaxError('- found in the middle of floating point literal: ' + token)
         elif len(token) >= 2 and token[0] == '"' and token[-1] == '"':
             stack.append(token[1:-2])
         elif token in funcs:
@@ -121,6 +124,7 @@ if __name__ == '__main__':
     "hello, world" .
     .s [ .s pop .s ] .s
     1.1 1 + .
+    -1.2 .
     1 1 ' ff ' tf 1 if .
     """
     print "PROGRAM:",program
