@@ -108,7 +108,8 @@ def run(tokens, stack, funcs):
 
 builtin_functions = {
         'noop': [],
-        '$': ['call']
+        '$': ['call'],
+        'recip': [']', '1.0', '[', '/']
         }
         
 if __name__ == '__main__':
@@ -126,6 +127,8 @@ if __name__ == '__main__':
     1.1 1 + .
     -1.2 .
     1 1 ' ff ' tf 1 if .
+
+    10 recip .
     """
     print "PROGRAM:",program
     tokens = tokenize(program)
