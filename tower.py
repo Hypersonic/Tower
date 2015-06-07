@@ -127,7 +127,6 @@ if __name__ == '__main__':
     1.1 1 + .
     -1.2 .
     1 1 ' ff ' tf 1 if .
-
     10 recip .
     """
     print "PROGRAM:",program
