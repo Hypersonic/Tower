@@ -109,7 +109,8 @@ def run(tokens, stack, funcs):
 builtin_functions = {
         'noop': [],
         '$': ['call'],
-        'recip': [']', '1.0', '[', '/']
+        'recip': [']', '1.0', '[', '/'],
+        'neg': ['-1', '*']
         }
         
 if __name__ == '__main__':
