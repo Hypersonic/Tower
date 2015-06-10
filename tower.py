@@ -129,6 +129,7 @@ if __name__ == '__main__':
     -1.2 .
     1 1 ' ff ' tf 1 if .
     10 recip .
+    12 neg .
     """
     print "PROGRAM:",program
     tokens = tokenize(program)
