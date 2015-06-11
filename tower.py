@@ -1,5 +1,9 @@
 from copy import copy
 
+class TowerString(object):
+    def __init__(self, data):
+        self.data = data
+
 def tokenize(program):
     tokens = []
     curr_token = ""
@@ -87,7 +91,11 @@ def run(tokens, stack, funcs):
             stack.insert(0, stack.pop())
         elif token == '.':
             val = stack.pop()
-            print str(val)
+# later we'll be able to remove these special cases, but for now type classes aren't implemented for everything
+            if type(val) is TowerString:
+                print str(val.data)
+            else:
+                print str(val)
         elif token == '.s':
             print str(stack)
         elif token.isdigit() or (token[1:].isdigit() and token[0] == '-'):
@@ -98,7 +106,7 @@ def run(tokens, stack, funcs):
             else:
                 raise SyntaxError('- found in the middle of floating point literal: ' + token)
         elif len(token) >= 2 and token[0] == '"' and token[-1] == '"':
-            stack.append(token[1:-2])
+            stack.append(TowerString(token[1:-2]))
         elif token in funcs:
             run(copy(funcs[token]), stack, funcs)
         else:
