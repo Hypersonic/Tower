@@ -4,6 +4,10 @@ class TowerString(object):
     def __init__(self, data):
         self.data = data
 
+class TowerNumber(object):
+    def __init__(self, data):
+        self.data = data
+
 def tokenize(program):
     tokens = []
     curr_token = ""
@@ -49,19 +53,19 @@ def run(tokens, stack, funcs):
         elif token == '+': # add
             first = stack.pop()
             second = stack.pop()
-            stack.append(first + second)
+            stack.append(TowerNumber(first.data + second.data))
         elif token == '-': # sub
             first = stack.pop()
             second = stack.pop()
-            stack.append(second - first)
+            stack.append(TowerNumber(second.data - first.data))
         elif token == '*': # mul
             first = stack.pop()
             second = stack.pop()
-            stack.append(first * second)
+            stack.append(TowerNumber(first.data * second.data))
         elif token == '/': # div
             first = stack.pop()
             second = stack.pop()
-            stack.append(second / first)
+            stack.append(TowerNumber(second.data / first.data))
         elif token == "'": # "quote" operator, pushes the next function to the stack
             func_name = tokens.pop(0)
             stack.append(func_name)
@@ -94,15 +98,17 @@ def run(tokens, stack, funcs):
 # later we'll be able to remove these special cases, but for now type classes aren't implemented for everything
             if type(val) is TowerString:
                 print str(val.data)
+            elif type(val) is TowerNumber:
+                print str(val.data)
             else:
                 print str(val)
         elif token == '.s':
             print str(stack)
         elif token.isdigit() or (token[1:].isdigit() and token[0] == '-'):
-            stack.append(int(token))
+            stack.append(TowerNumber(int(token)))
         elif all(c.isdigit() for c in token if c != '.' and c != '-'):
             if (token.count('-') == 1 and token[0] == '-') or token.count('-') == 0:
-                stack.append(float(token))
+                stack.append(TowerNumber(float(token)))
             else:
                 raise SyntaxError('- found in the middle of floating point literal: ' + token)
         elif len(token) >= 2 and token[0] == '"' and token[-1] == '"':
