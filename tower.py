@@ -8,6 +8,10 @@ class TowerNumber(object):
     def __init__(self, data):
         self.data = data
 
+class TowerFunc(object):
+    def __init__(self, data):
+        self.data = data
+
 def tokenize(program):
     tokens = []
     curr_token = ""
@@ -68,7 +72,7 @@ def run(tokens, stack, funcs):
             stack.append(TowerNumber(second.data / first.data))
         elif token == "'": # "quote" operator, pushes the next function to the stack
             func_name = tokens.pop(0)
-            stack.append(func_name)
+            stack.append(TowerFunc(func_name))
         elif token == 'dup':
             val = stack.pop()
             stack.append(val)
@@ -78,17 +82,17 @@ def run(tokens, stack, funcs):
         elif token =='call':
             func_name = stack.pop()
             if func_name in funcs: # non-builtin func
-                run(copy(funcs[func_name]), stack, funcs)
+                run(copy(funcs[func_name].data), stack, funcs)
             else: # builtin func (or undefined, in which case it'll get caught later)
-                run([func_name], stack, funcs)
+                run([func_name.data], stack, funcs)
         elif token == 'if':
             cond = stack.pop()
             true_func = stack.pop()
             false_func = stack.pop()
             if cond:
-                run(copy(funcs[true_func]), stack, funcs)
+                run(copy(funcs[true_func.data]), stack, funcs)
             else:
-                run(copy(funcs[false_func]), stack, funcs)
+                run(copy(funcs[false_func.data]), stack, funcs)
         elif token == '[': # rotate left
             stack.append(stack.pop(0))
         elif token == ']': # rotate right
