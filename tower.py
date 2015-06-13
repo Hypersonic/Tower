@@ -99,15 +99,9 @@ def run(tokens, stack, funcs):
             stack.insert(0, stack.pop())
         elif token == '.':
             val = stack.pop()
-# later we'll be able to remove these special cases, but for now type classes aren't implemented for everything
-            if type(val) is TowerString:
-                print str(val.data)
-            elif type(val) is TowerNumber:
-                print str(val.data)
-            else:
-                print str(val)
+            print str(val.data)
         elif token == '.s':
-            print str(stack)
+            print str([x.data for x in stack])
         elif token.isdigit() or (token[1:].isdigit() and token[0] == '-'):
             stack.append(TowerNumber(int(token)))
         elif all(c.isdigit() for c in token if c != '.' and c != '-'):
