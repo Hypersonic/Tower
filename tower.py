@@ -43,6 +43,22 @@ def tokenize(program):
             curr_token += c
     return tokens
 
+PARSE_STATE_BEGIN = 0x1
+PARSE_STATE_DEFINE = 0x2
+
+def parse(tokens):
+    parsed = []
+    states = [PARSE_STATE_BEGIN]
+    while tokens:
+        if states[-1] == PARSE_STATE_BEGIN:
+            token = tokens.pop(0)
+            if token == ':=':
+                states.append(PASE_STATE_DEFINE)
+        elif states[-1] == PARSE_STATE_DEFINE:
+            pass
+    return parsed
+
+
 def run(tokens, stack, funcs):
     while tokens:
         token = tokens.pop(0)
