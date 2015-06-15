@@ -167,23 +167,8 @@ builtin_functions = {
         }
         
 if __name__ == '__main__':
-    program = """
-    := f 1 1 + 1 - end
-    := ( a b -> a+b ) add + end # this is a comment
-    := tf + end
-    := ff - end
-    ( an inline comment )
-    ' f call . 
-    1 2 add .
-    1 2 3 4 5
-    "hello, world" .
-    .s [ .s pop .s ] .s
-    1.1 1 + .
-    -1.2 .
-    1 1 ' ff ' tf 1 if .
-    10 recip .
-    12 neg .
-    """
+    with open('example.tower') as f:
+        program = f.read()
     print "PROGRAM:",program
     tokens = tokenize(program)
     print "TOKENS:",tokens
