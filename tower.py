@@ -29,43 +29,46 @@ def tokenize(program):
         if state == TOKEN_STATE_BEGIN:
             if c == '"': # strings are a single token
                 curr_token += '"'
-                c = it.next()
                 state = TOKEN_STATE_QUOTE
             elif c == '(': # remove inline comments
                 state = TOKEN_STATE_INLINE_COMMENT
             elif c == '#': # remove until-EOL comments
                 state = TOKEN_STATE_COMMENT
             elif c in [' ', '\n']: # whitespace terminates a token
-                state = TOKEN_STATE_END
+                state = TOKEN_STATE_BEGIN
             else:
+                curr_token += c
                 state = TOKEN_STATE_SYMBOL
-        if state == TOKEN_STATE_QUOTE:
+        elif state == TOKEN_STATE_QUOTE:
             if c == '\\': # escape character
                 state = TOKEN_STATE_QUOTE_ESCAPE
             elif c == '"':
                 curr_token += c
-                state = TOKEN_STATE_END
-            else:
-                curr_token += c
-        if state == TOKEN_STATE_QUOTE_ESCAPE:
-            curr_token += c
-            state = TOKEN_STATE_QUOTE
-        if state == TOKEN_STATE_INLINE_COMMENT:
-            if c == ')':
-                state = TOKEN_STATE_BEGIN
-        if state == TOKEN_STATE_COMMENT:
-            if c == '\n':
-                state = TOKEN_STATE_END
-        if state == TOKEN_STATE_SYMBOL:
-            if c in [' ', '\n']: # whitespace terminates a token
-                state = TOKEN_STATE_END
-            else:
-                curr_token += c
-        if state == TOKEN_STATE_END:
-            if curr_token:
                 tokens.append(curr_token)
                 curr_token = ''
-            state = TOKEN_STATE_BEGIN
+                state = TOKEN_STATE_BEGIN
+            else:
+                curr_token += c
+        elif state == TOKEN_STATE_QUOTE_ESCAPE:
+            curr_token += c
+            state = TOKEN_STATE_QUOTE
+        elif state == TOKEN_STATE_INLINE_COMMENT:
+            if c == ')':
+                state = TOKEN_STATE_BEGIN
+        elif state == TOKEN_STATE_COMMENT:
+            if c == '\n':
+                if curr_token:
+                    tokens.append(curr_token)
+                    curr_token = ''
+                state = TOKEN_STATE_BEGIN
+        elif state == TOKEN_STATE_SYMBOL:
+            if c in [' ', '\n']: # whitespace terminates a token
+                if curr_token:
+                    tokens.append(curr_token)
+                    curr_token = ''
+                state = TOKEN_STATE_BEGIN
+            else:
+                curr_token += c
     return tokens
 
 PARSE_STATE_BEGIN = 0x1
@@ -147,6 +150,7 @@ def run(tokens, stack, funcs):
             stack.append(TowerNumber(int(token)))
         elif all(c.isdigit() for c in token if c != '.' and c != '-'):
             if (token.count('-') == 1 and token[0] == '-') or token.count('-') == 0:
+                print "FLOAT:",token
                 stack.append(TowerNumber(float(token)))
             else:
                 raise SyntaxError('- found in the middle of floating point literal: ' + token)
