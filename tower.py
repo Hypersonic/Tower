@@ -1,4 +1,5 @@
 from copy import copy
+import sys
 
 class TowerString(object):
     def __init__(self, data):
@@ -170,10 +171,13 @@ builtin_functions = {
         }
         
 if __name__ == '__main__':
-    with open('example.tower') as f:
-        program = f.read()
-    print "PROGRAM:",program
-    tokens = tokenize(program)
-    print "TOKENS:",tokens
-    from copy import copy
-    result = run(tokens, [], copy(builtin_functions))
+    if len(sys.argv) > 1:
+        with open(sys.argv[1]) as f:
+            program = f.read()
+        print "PROGRAM:",program
+        tokens = tokenize(program)
+        print "TOKENS:",tokens
+        from copy import copy
+        result = run(tokens, [], copy(builtin_functions))
+    else:
+        print "usage: python tower.py [program_filename]"
