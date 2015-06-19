@@ -21,7 +21,7 @@ TOKEN_STATE_INLINE_COMMENT = 0x5
 TOKEN_STATE_COMMENT = 0x6
 TOKEN_STATE_SYMBOL = 0x7
 
-def tokenize(program):
+def lex(program):
     tokens = []
     curr_token = ""
     it = iter(program)
@@ -175,7 +175,7 @@ if __name__ == '__main__':
         with open(sys.argv[1]) as f:
             program = f.read()
         print "PROGRAM:",program
-        tokens = tokenize(program)
+        tokens = lex(program)
         print "TOKENS:",tokens
         from copy import copy
         result = run(tokens, [], copy(builtin_functions))
