@@ -4,14 +4,20 @@ import sys
 class TowerString(object):
     def __init__(self, data):
         self.data = data
+    def __repr__(self):
+        return 'TowerString(%r)'%self.data
 
 class TowerNumber(object):
     def __init__(self, data):
         self.data = data
+    def __repr__(self):
+        return 'TowerNumber(%r)'%self.data
 
 class TowerFunc(object):
     def __init__(self, data):
         self.data = data
+    def __repr__(self):
+        return 'TowerFunc(%r)'%self.data
 
 TOKEN_STATE_BEGIN = 0x1
 TOKEN_STATE_END = 0x2
