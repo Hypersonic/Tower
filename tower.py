@@ -178,7 +178,7 @@ builtin_functions = {
         
 if __name__ == '__main__':
     if len(sys.argv) > 1:
-        with open(sys.argv[1]) as f:
+        with open(sys.argv[-1]) as f:
             program = f.read()
         print "PROGRAM:",program
         tokens = lex(program)
