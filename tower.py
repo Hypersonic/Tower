@@ -29,13 +29,13 @@ TOKEN_STATE_SYMBOL = 0x7
 
 def lex(program):
     tokens = []
-    curr_token = ""
+    curr_token = []
     it = iter(program)
     state = TOKEN_STATE_BEGIN
     for c in it:
         if state == TOKEN_STATE_BEGIN:
             if c == '"': # strings are a single token
-                curr_token += '"'
+                curr_token.append('"')
                 state = TOKEN_STATE_QUOTE
             elif c == '(': # remove inline comments
                 state = TOKEN_STATE_INLINE_COMMENT
@@ -44,20 +44,20 @@ def lex(program):
             elif c in [' ', '\n']: # whitespace terminates a token
                 state = TOKEN_STATE_BEGIN
             else:
-                curr_token += c
+                curr_token.append(c)
                 state = TOKEN_STATE_SYMBOL
         elif state == TOKEN_STATE_QUOTE:
             if c == '\\': # escape character
                 state = TOKEN_STATE_QUOTE_ESCAPE
             elif c == '"':
-                curr_token += c
-                tokens.append(curr_token)
-                curr_token = ''
+                curr_token.append(c)
+                tokens.append("".join(curr_token))
+                curr_token = []
                 state = TOKEN_STATE_BEGIN
             else:
-                curr_token += c
+                curr_token.append(c)
         elif state == TOKEN_STATE_QUOTE_ESCAPE:
-            curr_token += c
+            curr_token.append(c)
             state = TOKEN_STATE_QUOTE
         elif state == TOKEN_STATE_INLINE_COMMENT:
             if c == ')':
@@ -65,17 +65,17 @@ def lex(program):
         elif state == TOKEN_STATE_COMMENT:
             if c == '\n':
                 if curr_token:
-                    tokens.append(curr_token)
-                    curr_token = ''
+                    tokens.append("".join(curr_token))
+                    curr_token = []
                 state = TOKEN_STATE_BEGIN
         elif state == TOKEN_STATE_SYMBOL:
             if c in [' ', '\n']: # whitespace terminates a token
                 if curr_token:
-                    tokens.append(curr_token)
-                    curr_token = ''
+                    tokens.append("".join(curr_token))
+                    curr_token = []
                 state = TOKEN_STATE_BEGIN
             else:
-                curr_token += c
+                curr_token.append(c)
     return tokens
 
 PARSE_STATE_BEGIN = 0x1
