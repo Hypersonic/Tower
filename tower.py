@@ -169,12 +169,10 @@ def run(tokens, stack, funcs):
 
     return stack
 
-builtin_functions = {
-        'noop': [],
-        '$': ['call'],
-        'recip': [']', '1.0', '[', '/'],
-        'neg': ['-1', '*']
-        }
+# populate the builtins by running builtins.tower
+builtin_functions = {}
+with open('builtins.tower') as f:
+    run(lex(f.read()),[], builtin_functions)
         
 if __name__ == '__main__':
     if len(sys.argv) > 1:
