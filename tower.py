@@ -134,6 +134,13 @@ def run(tokens, stack, funcs):
             first = stack.pop()
             second = stack.pop()
             stack.append(TowerBool(first.data == second.data))
+        elif token == '<':
+            first = stack.pop()
+            second = stack.pop()
+            stack.append(TowerBool(first.data < second.data))
+        elif token == '!':
+            val = stack.pop()
+            stack.append(TowerBool(not first.data))
         elif token == 'dup':
             val = stack.pop()
             stack.append(val)
@@ -163,15 +170,19 @@ def run(tokens, stack, funcs):
             print str(val.data)
         elif token == '.s':
             print str([x.data for x in stack])
-        elif token.isdigit() or (token[1:].isdigit() and token[0] == '-'):
+        elif token.isdigit() or (token[1:].isdigit() and token[0] == '-'): # integer literal
             stack.append(TowerNumber(int(token)))
-        elif all(c.isdigit() for c in token if c != '.' and c != '-'):
+        elif all(c.isdigit() for c in token if c != '.' and c != '-'): # float literal
             if (token.count('-') == 1 and token[0] == '-') or token.count('-') == 0:
                 stack.append(TowerNumber(float(token)))
             else:
                 raise SyntaxError('- found in the middle of floating point literal: ' + token)
-        elif len(token) >= 2 and token[0] == '"' and token[-1] == '"':
+        elif len(token) >= 2 and token[0] == '"' and token[-1] == '"': # string literal
             stack.append(TowerString(token[1:-1]))
+        elif token == 'True': # True literal
+            stack.append(TowerBool(True))
+        elif token == 'False': # False literal
+            stack.append(TowerBool(False))
         elif token in funcs:
             run(copy(funcs[token]), stack, funcs)
         else:
