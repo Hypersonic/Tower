@@ -19,6 +19,12 @@ class TowerFunc(object):
     def __repr__(self):
         return 'TowerFunc(%r)'%self.data
 
+class TowerBool(object):
+    def __init__(self, data):
+        self.data = data
+    def __repr__(self):
+        return 'TowerBool(%r)'%self.data
+
 TOKEN_STATE_BEGIN = 0x1
 TOKEN_STATE_END = 0x2
 TOKEN_STATE_QUOTE = 0x3
@@ -124,6 +130,10 @@ def run(tokens, stack, funcs):
         elif token == "'": # "quote" operator, pushes the next function to the stack
             func_name = tokens.pop(0)
             stack.append(TowerFunc(func_name))
+        elif token == '=':
+            first = stack.pop()
+            second = stack.pop()
+            stack.append(TowerBool(first.data == second.data))
         elif token == 'dup':
             val = stack.pop()
             stack.append(val)
