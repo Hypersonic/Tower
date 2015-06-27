@@ -2,3 +2,4 @@
 := $ call end
 := recip ( a -- 1/a ) ] 1.0 [ / end
 := neg ( a -- -a ) -1 * end
+:= > dup = ] < [ ! end
