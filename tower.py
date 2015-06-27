@@ -138,6 +138,10 @@ def run(tokens, stack, funcs):
             first = stack.pop()
             second = stack.pop()
             stack.append(TowerBool(first.data < second.data))
+        elif token == 'or':
+            first = stack.pop()
+            second = stack.pop()
+            stack.append(TowerBool(first.data or second.data))
         elif token == '!':
             val = stack.pop()
             stack.append(TowerBool(not first.data))
