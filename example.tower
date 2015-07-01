@@ -10,7 +10,7 @@
 .s [ .s pop .s ] .s
 1.1 1 + .
 -1.2 .
-1 1 ' ff ' tf 1 if .
+1 1 ' ff ' tf True if .
 10 recip .
 12 neg .
 12 11 < .
