@@ -25,3 +25,11 @@ In practice, this looks like:
 This will call truefunc. If the conditional were False, it would call falsefunc.
 
 Using this conditional and recursion, you can accomplish terminatable looping.
+
+Literals:
+---------
+
+In addition to function literals, you have:
+Boolean literals: True, False
+Integer literals: 1, 2, etc.
+Float literals: 1.1, .01, etc.
