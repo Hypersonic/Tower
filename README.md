@@ -30,6 +30,9 @@ Literals:
 ---------
 
 In addition to function literals, you have:
+
 Boolean literals: True, False
+
 Integer literals: 1, 2, etc.
+
 Float literals: 1.1, .01, etc.
