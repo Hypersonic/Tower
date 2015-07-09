@@ -38,3 +38,14 @@ Integer literals: 1, 2, etc.
 Float literals: 1.1, .01, etc.
 
 String literals: "hello, world"
+
+Builtin Functions:
+------------------
+
+Arithmetic Operations: +,-,\*,/
+
+Stack operations: pop, dup, [, ] 
+
+Printing operations: ., .s
+
+Logical operations: =, <, >, >=, <=, or, !
