@@ -42,12 +42,12 @@ String literals: "hello, world"
 Builtin Functions:
 ------------------
 
-Arithmetic Operations: +,-,\*,/
+Arithmetic Operations: `+`,`-`,`\*`,`/`
 
-Stack operations: pop, dup, [, ] 
+Stack operations: `pop`, `dup`, `[`, `]`
 
-Printing operations: ., .s
+Printing operations: `.`, `.s`
 
-Logical operations: =, <, >, >=, <=, or, !
+Logical operations: `=`, `<`, `>`, `>=`, `<=`, `or`, `!`
 
-Function operatons: ', call, if
+Function operatons: `'`, `call`, `if`
