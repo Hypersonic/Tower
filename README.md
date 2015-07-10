@@ -31,13 +31,13 @@ Literals:
 
 In addition to function literals, you have:
 
-Boolean literals: True, False
+Boolean literals: `True`, `False`
 
-Integer literals: 1, 2, etc.
+Integer literals: `1`, `2`, etc.
 
-Float literals: 1.1, .01, etc.
+Float literals: `1.1`, `.01`, etc.
 
-String literals: "hello, world"
+String literals: `"hello, world"`
 
 Builtin Functions:
 ------------------
