@@ -49,3 +49,5 @@ Stack operations: pop, dup, [, ]
 Printing operations: ., .s
 
 Logical operations: =, <, >, >=, <=, or, !
+
+Function operatons: ', call, if
